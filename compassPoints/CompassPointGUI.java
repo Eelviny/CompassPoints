@@ -102,7 +102,6 @@ if(inventory != null && event.getCurrentItem() != null)
 			        					
 		        						player.teleport(compassPoint.getLocation());
 		        						player.sendMessage(messageData.get("gui.teleport") + configMap.get(compassPoint).getItemMeta().getDisplayName());
-		        						player.getWorld().playSound( player.getLocation(),Sound.ENDERMAN_TELEPORT,5, 1);
 		        					}else{
 		        						event.setCancelled(true);
 		        						player.sendMessage(messageData.get("gui.noworld"));
@@ -184,7 +183,6 @@ if(inventory != null && event.getCurrentItem() != null)
 	        						player.teleport(player.getBedSpawnLocation());
 	        						player.sendMessage(messageData.get("gui.bed.teleport"));
 	        						player.setCompassTarget((player.getBedSpawnLocation()));
-	        						player.getWorld().playSound( player.getLocation(),Sound.ENDERMAN_TELEPORT,5, 1);
 	        					}else{
 	        						event.setCancelled(true);
 	        						player.sendMessage(messageData.get("gui.noworld"));
@@ -377,7 +375,6 @@ if(inventory != null && event.getCurrentItem() != null)
 	        						
 	        						if(world.isChunkLoaded(world.getChunkAt(world.getSpawnLocation()))){
 	    								player.teleport(compassPoints.get(event.getSlot() - 9).getLocation());
-	    								player.getWorld().playSound(player.getLocation(),Sound.ENDERMAN_TELEPORT, 5, 1);
 	    								player.setCompassTarget(compassPoints.get(event.getSlot() - 9).getLocation());
 	    								
 	    								if( compassPoints.get(event.getSlot() - 9).getName().equals("DEFAULT")){

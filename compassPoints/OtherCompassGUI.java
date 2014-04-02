@@ -91,7 +91,6 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 			        					
 			        						player.teleport(compassPoint.getLocation());
 			        						player.sendMessage(messageData.get("gui.teleport") + configMap.get(compassPoint).getItemMeta().getDisplayName());
-			        						player.getWorld().playSound( player.getLocation(),Sound.ENDERMAN_TELEPORT,5, 1);
 			        				}else{
 			        					event.setCancelled(true);
 		        						player.sendMessage(messageData.get("gui.noworld"));
@@ -128,7 +127,6 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 	        						if(world.isChunkLoaded(world.getChunkAt(world.getSpawnLocation()))){
 		        						player.teleport(playersInvenPlayer.getBedSpawnLocation());
 		        						player.sendMessage(messageData.get("gui.teleport") + playersInvenPlayer.getDisplayName() + "'s" + " Bed Spawn");
-		        						player.getWorld().playSound( player.getLocation(),Sound.ENDERMAN_TELEPORT,5, 1);
 		        					}else{
 			        					event.setCancelled(true);
 		        						player.sendMessage(messageData.get("gui.noworld"));
