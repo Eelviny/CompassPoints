@@ -1,0 +1,77 @@
+name: CompassPoints
+description: Set points and teleport around multiple worlds using the humble compass!
+author: JayLegoMine14
+website: http://justgame.co/
+main: compassPoints.CompassPoints
+version: 3.5.1
+commands:
+   point:
+      description: Open CompassPoint.
+      usage: /<command>
+   point:
+      description: Open specified player's CompassPoint.
+      usage: /<command> <Player>
+   point:
+      description: Reload Config.yml
+      usage: /<command> reload
+   home:
+      description: Teleport to your Spawn Bed
+      usage: /home
+permissions:
+   compasspoints.*:
+      description: Gives access to all compasspoints.
+      children:
+         compasspoints.use: true
+         compasspoints.rename: true
+         compasspoints.delete: true
+         compasspoints.command: true
+         compasspoints.other: true
+         compasspoints.reload: true
+         compasspoints.teleport: true
+         compasspoints.home: true
+         compasspoints.row.1: true 
+         compasspoints.row.2: true
+         compasspoints.row.3: true
+         compasspoints.row.4: true
+         compasspoints.row.5: true
+   compasspoints.use:
+      description: Allows for the use of this plugin by a player.
+      default: true
+   compasspoints.rename:
+      description: Allows for the use of the Rename Anvil.
+      default: true
+   compasspoints.delete:
+      description: Allows for the use of Delete.
+      default: true
+   compasspoints.command: 
+      description: Allow the use of /point.
+      default: op
+   compasspoints.other:
+      description: Allow the use of /point <player>.
+      default: op
+   compasspoints.reload:
+      description: Allow the use of /point reload.
+      default: op
+   compasspoints.teleport:
+      description: Allow teleport instead of pointing the compass.
+      default: op
+   compasspoints.home:
+      description: Allows for the use of /home.
+      default: true
+   compasspoints.row.1:
+      description: Allow 1 rows of player-defined points.
+      default: true
+   compasspoints.row.2:
+      description: Allow 2 rows of player-defined points.
+      default: op
+   compasspoints.row.3:
+      description: Allow 3 rows of player-defined points.
+      default: op
+   compasspoints.row.4:
+      description: Allow 4 rows of player-defined points.
+      default: op
+   compasspoints.row.5:
+      description: Allow 5 rows of player-defined points.
+      default: op
+    
+    
