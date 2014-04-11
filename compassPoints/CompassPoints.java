@@ -254,7 +254,6 @@ public class CompassPoints extends JavaPlugin{
 						}else{
 							player.teleport(player.getBedSpawnLocation());
 							player.sendMessage(messageData.get("gui.bed.teleport"));
-							player.getWorld().playSound( player.getLocation(),Sound.ENDERMAN_TELEPORT,5, 1);
 
 							return true;
 						}
