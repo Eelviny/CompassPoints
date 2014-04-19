@@ -1,5 +1,11 @@
 package compassPoints;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.UUID;
+import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,6 +26,22 @@ public class PlayerLoginListener implements Listener{
 		}else{
 			player.setCompassTarget(spawn);
 		}
+		
+		final String playersName = player.getName();
+		final UUIDFetcher UUIDF = new UUIDFetcher(Arrays.asList(playersName));
+		Thread getter = new Thread(){
+			public void run (){
+				Map<String, UUID> UUIDS;
+				try{
+					UUIDS = UUIDF.call();
+					System.out.println(UUIDS.toString());
+					CompassPoints.addUUID(playersName, UUIDS.get(playersName).toString()); 
+				}catch (Exception e){
+					Bukkit.getServer().getLogger().log(Level.SEVERE, "WARNING: Error retrieving player UUID!");
+				}
+			}
+		};
+		getter.start();
     }
 	
 	

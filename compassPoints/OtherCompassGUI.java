@@ -165,10 +165,13 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 		    				 playersInvenFile = new File( dir, playersInven + ".yml");
 		    			
 		    			if(playersInvenFile.exists())
-		    				 compassPoints = PlayerCompassPointsFile.readPlayerFile(playersInven);
+		    				if(CompassPoints.getUUID(playersInven) != null)
+		    				 compassPoints = PlayerCompassPointsFile.readPlayerFile(playersInven, true);
+		    				else
+		    				compassPoints = PlayerCompassPointsFile.readPlayerFile(playersInven, false);	
 		    			
 		    		}else{
-		    				compassPoints = PlayerCompassPointsFile.readPlayerFile(playersInvenPlayer.getDisplayName());
+		    				compassPoints = PlayerCompassPointsFile.readPlayerFile(playersInvenPlayer.getDisplayName(), true);
 		    		}
 		    		
 		    				if(player.hasPermission("compasspoints.teleport")){
@@ -333,7 +336,8 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 		ArrayList<CompassPoint> compassPoints = null;
 		
 			
-			File playersInvenFile = null;
+			File playersInvenFile1 = null;
+			File playersInvenFile2 = null;
 		
 				File dir = new File(CompassPoints.getThisDataFolder()+File.separator+"Player"+File.separator);
 				try {
@@ -341,10 +345,15 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				 playersInvenFile = new File( dir, otherPlayer + ".yml");
+				 playersInvenFile1 = new File( dir, CompassPoints.getUUID(otherPlayer) + ".yml");
+				 playersInvenFile2 = new File( dir, otherPlayer + ".yml");
 			
-			if(playersInvenFile.exists()){
-				 compassPoints = PlayerCompassPointsFile.readPlayerFile(otherPlayer);
+			if(playersInvenFile1.exists() || playersInvenFile2.exists()){
+				if(CompassPoints.getUUID(otherPlayer) != null)
+   				 compassPoints = PlayerCompassPointsFile.readPlayerFile(otherPlayer, true);
+   				else
+   				compassPoints = PlayerCompassPointsFile.readPlayerFile(otherPlayer, false);	
+				 
 
     int counter = 9;
     int compassPointInt = 0;

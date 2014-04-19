@@ -232,7 +232,7 @@ if(inventory != null && event.getCurrentItem() != null)
 	        		
 	 }else if (event.getCurrentItem().equals(bookAndQuill)){
 	        		
-	        		ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName());
+	        		ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName(), true);
 	        		
 	        		player.playSound(player.getLocation(),Sound.CLICK, 2, 1);
 	        		
@@ -261,14 +261,14 @@ if(inventory != null && event.getCurrentItem() != null)
 	        														player.getLocation().getBlockZ(),
 	        															player.getWorld(), NameUtils.RandomName(compassPoints)));
 	        			
-	        				PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName());
+	        				PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName(), true);
 	        			
 	        				updateInven(player, inventory, limit, compassPoints);  	
 	        			}
 	        			
 	  }else if (event.getCurrentItem().getType().equals(Material.MAP) && event.getCurrentItem().getItemMeta().getLore() != null){
 	        		
-	        		ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName());
+	        		ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName(), true);
 	        		
 	        		if(renameMode == true){
 	        		
@@ -286,7 +286,7 @@ if(inventory != null && event.getCurrentItem() != null)
 								  @Override
 								  public void onAnvilClick(AnvilGUI.AnvilClickEvent anvilEvent){
 									  
-									  ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName());
+									  ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName(), true);
 									  
 								 if(anvilEvent.getSlot() == AnvilGUI.AnvilSlot.OUTPUT && !anvilEvent.getName().isEmpty()){
 								  anvilEvent.setWillDestroy(true);
@@ -295,7 +295,7 @@ if(inventory != null && event.getCurrentItem() != null)
 								  compassPoints.get(event.getSlot() - 9).setName(MessageUtils.FormatString(anvilEvent.getName()));
 								  player.setLevel(player.getLevel() - 7);
 								  
-								  PlayerCompassPointsFile.writePlayerFile(compassPoints, player.getDisplayName());
+								  PlayerCompassPointsFile.writePlayerFile(compassPoints, player.getDisplayName(), true);
 								  
 								 renameMode = false;
 								 player.playSound(player.getLocation(),Sound.ANVIL_USE, 1, 1);
@@ -450,9 +450,9 @@ if(inventory != null && event.getCurrentItem() != null)
 											compassPoints.get(event.getSlot() - 9).getZ());
 	        			
 	        			compassPoints.remove(event.getSlot() - 9);
-	        			PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName());
+	        			PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName(), true);
 	        			
-	        			 compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName());
+	        			 compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName(), true);
 	        			
 	        			 int size = 18;
 	 		    		
@@ -701,7 +701,7 @@ if(player.getBedSpawnLocation() != null)
 		limit = 9;
 	}
 
-	ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName());
+	ArrayList<CompassPoint> compassPoints = PlayerCompassPointsFile.readPlayerFile(player.getDisplayName(), true);
 	
 boolean trim = false;
 	while(compassPoints.size() > limit){
@@ -710,7 +710,7 @@ boolean trim = false;
 	}
 	
 if(trim == true)
-	PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName());
+	PlayerCompassPointsFile.writePlayerFile(compassPoints ,player.getDisplayName(), true);
 	
 int counter = 9;
 int compassPointInt = 0;

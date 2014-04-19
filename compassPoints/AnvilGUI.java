@@ -1,8 +1,13 @@
 package compassPoints;
 import java.util.HashMap;
 
-import net.minecraft.server.v1_7_R2.PacketPlayOutOpenWindow;
+import net.minecraft.server.v1_7_R3.ContainerAnvil;
+import net.minecraft.server.v1_7_R3.EntityHuman;
+import net.minecraft.server.v1_7_R3.EntityPlayer;
+import net.minecraft.server.v1_7_R3.PacketPlayOutOpenWindow;
+
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_7_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.HandlerList;
@@ -18,13 +23,13 @@ import org.bukkit.inventory.meta.ItemMeta;
 * Created by chasechocolate.
 */
 public class AnvilGUI {
-    private class AnvilContainer extends net.minecraft.server.v1_7_R2.ContainerAnvil{
-        public AnvilContainer(net.minecraft.server.v1_7_R2.EntityHuman entity){
+    private class AnvilContainer extends ContainerAnvil{
+        public AnvilContainer(EntityHuman entity){
             super(entity.inventory, entity.world, 0, 0, 0, entity);
         }
  
         @Override
-        public boolean a(net.minecraft.server.v1_7_R2.EntityHuman entityhuman){
+        public boolean a(EntityHuman entityhuman){
             return true;
         }
     }
@@ -200,7 +205,7 @@ public class AnvilGUI {
     }
  
     public void open(){
-        net.minecraft.server.v1_7_R2.EntityPlayer p = ((org.bukkit.craftbukkit.v1_7_R2.entity.CraftPlayer) player).getHandle();
+        EntityPlayer p = ((CraftPlayer) player).getHandle();
  
         AnvilContainer container = new AnvilContainer(p);
         

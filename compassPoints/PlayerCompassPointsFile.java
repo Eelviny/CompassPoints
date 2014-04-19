@@ -12,29 +12,48 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class PlayerCompassPointsFile extends JavaPlugin{
 
-public static synchronized void writePlayerFile(ArrayList<CompassPoint> compassPoints, String playerName){
+public static synchronized void writePlayerFile(ArrayList<CompassPoint> compassPoints, String playerName, boolean convert){
 		
-	File playerFile = createPlayerFile(playerName);
-	playerFile.delete();
-	File newplayerFile = createPlayerFile(playerName);
+	File playerFile1 = createPlayerFile(CompassPoints.getUUID(playerName), false);
+	File playerFile2 = createPlayerFile(playerName, false);
+	if(playerFile1.exists()){
+		playerFile1.delete();
+	}else{
+		playerFile2.delete();
+	}
+	
+	File newPlayerFile = null;
+	
+	if(convert){
+		 newPlayerFile = createPlayerFile(CompassPoints.getUUID(playerName), true);
+	}else{
+		 newPlayerFile = createPlayerFile(playerName, true);
+	}
 	
 	int counter = 0;
 		for(CompassPoint compassPoint : compassPoints){
 			
-			setMessage(newplayerFile, "compasspoint" + counter +".x", compassPoint.getX().toString());
-			setMessage(newplayerFile, "compasspoint" + counter +".y", compassPoint.getY().toString());
-			setMessage(newplayerFile, "compasspoint" + counter +".z", compassPoint.getZ().toString());
-			setMessage(newplayerFile, "compasspoint" + counter +".name", compassPoint.getName());
-			setMessage(newplayerFile, "compasspoint" + counter +".world", compassPoint.getWorld().getName());
+			setMessage(newPlayerFile, "compasspoint" + counter +".x", compassPoint.getX().toString());
+			setMessage(newPlayerFile, "compasspoint" + counter +".y", compassPoint.getY().toString());
+			setMessage(newPlayerFile, "compasspoint" + counter +".z", compassPoint.getZ().toString());
+			setMessage(newPlayerFile, "compasspoint" + counter +".name", compassPoint.getName());
+			setMessage(newPlayerFile, "compasspoint" + counter +".world", compassPoint.getWorld().getName());
 			
 			counter++;
 		}
 		
 	}
 	
-	public static synchronized ArrayList<CompassPoint> readPlayerFile(String playerName){
+	public static synchronized ArrayList<CompassPoint> readPlayerFile(String playerName, boolean convert){
 		
-		File playerFile = createPlayerFile(playerName);
+		boolean switchToUUID = false;
+		
+		File playerFile = createPlayerFile(CompassPoints.getUUID(playerName), false);
+		if(!playerFile.exists()){
+			playerFile = createPlayerFile(playerName, true);
+			switchToUUID = true;
+		}
+		
 		 FileConfiguration config = YamlConfiguration.loadConfiguration(playerFile);
 	
 		 ArrayList<CompassPoint> compassPoints = new ArrayList<CompassPoint>();
@@ -66,20 +85,23 @@ public static synchronized void writePlayerFile(ArrayList<CompassPoint> compassP
 			 }
 		 }
 		 
+		 if(switchToUUID && convert)
+			 PlayerCompassPointsFile.writePlayerFile(compassPoints ,playerName, true);
+			 
 		 if(rewrite)
-			 PlayerCompassPointsFile.writePlayerFile(compassPoints ,playerName);
+			 PlayerCompassPointsFile.writePlayerFile(compassPoints ,playerName, true);
 
 		 return compassPoints;
 	}
 	
-	private static File createPlayerFile(String playerName){
+	private static File createPlayerFile(String playerName, boolean bool){
 		try {
 			
 			File dir = new File(CompassPoints.getThisDataFolder()+File.separator+"Player"+File.separator);
 			Files.createDirectories(dir.toPath());
 			File playerFile = new File( dir, playerName + ".yml");
 			
-			if(!playerFile.exists()){
+			if(!playerFile.exists() && bool){
 				playerFile.createNewFile();
 			}
 			

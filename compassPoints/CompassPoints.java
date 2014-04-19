@@ -5,7 +5,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
+import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -28,6 +31,7 @@ public class CompassPoints extends JavaPlugin{
 	public static Plugin compassPoints; 
 	public static File dataFolder;
 
+	public static HashMap<String, String> UUIDs = new HashMap<String, String>();
 	public static TreeMap<CompassPoint, ItemStack> configMap = new TreeMap<CompassPoint, ItemStack >();
 	public static ArrayList<World> worlds = new ArrayList<World>();
 	public static HashMap<String, String> messageData = new HashMap<String, String>();
@@ -166,6 +170,24 @@ public class CompassPoints extends JavaPlugin{
 
 		}catch(Exception e1){
 			e1.printStackTrace();
+		}
+		
+		for(Player player: Bukkit.getServer().getOnlinePlayers()){
+			final String playersName = player.getName();
+			final UUIDFetcher UUIDF = new UUIDFetcher(Arrays.asList(playersName));
+			System.out.println("I did this");
+			Thread getter = new Thread(){
+				public void run (){
+					Map<String, UUID> UUIDS;
+					try{
+						UUIDS = UUIDF.call();
+						CompassPoints.addUUID(playersName, UUIDS.get(playersName).toString()); 
+					}catch (Exception e){
+						Bukkit.getServer().getLogger().log(Level.SEVERE, "WARNING: Error retrieving player UUID!");
+					}
+				}
+			};
+			getter.start();
 		}
 
 
@@ -308,6 +330,15 @@ public class CompassPoints extends JavaPlugin{
 
 		return dataFolder;
 
+	}
+	public static synchronized String getUUID(String playersName){
+		if(UUIDs.containsKey(playersName)){
+			return UUIDs.get(playersName);
+		}
+		return null;
+	}
+	public static synchronized void addUUID(String playersName, String UUID){
+		UUIDs.put(playersName, UUID);
 	}
 
 	private void setMessage(String name, String message) {
