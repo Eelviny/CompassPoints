@@ -35,6 +35,7 @@ public OtherCompassGUI(Player player, final String otherPlayer){
 	
 	 listener = new Listener(){
 			
+			@SuppressWarnings("deprecation")
 			@EventHandler(priority=EventPriority.HIGH)
 		    public void onInventoryClick(final InventoryClickEvent event){
 				

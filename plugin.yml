@@ -3,7 +3,7 @@ description: Set points and teleport around multiple worlds using the humble com
 author: JayLegoMine14
 website: http://justgame.co/
 main: compassPoints.CompassPoints
-version: 4.0.0
+version: 4.0.1
 commands:
    point:
       description: Open CompassPoint.

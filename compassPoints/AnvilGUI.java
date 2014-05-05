@@ -22,6 +22,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 /**
 * Created by chasechocolate.
 */
+
 public class AnvilGUI {
     private class AnvilContainer extends ContainerAnvil{
         public AnvilContainer(EntityHuman entity){
