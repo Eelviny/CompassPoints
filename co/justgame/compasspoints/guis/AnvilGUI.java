@@ -1,4 +1,5 @@
-package compassPoints;
+package co.justgame.compasspoints.guis;
+
 import java.util.HashMap;
 
 import net.minecraft.server.v1_7_R3.ContainerAnvil;
@@ -19,227 +20,232 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import co.justgame.compasspoints.main.CompassPoints;
+
 /**
-* Created by chasechocolate.
-*/
+ * Created by chasechocolate.
+ */
 
 public class AnvilGUI {
-    private class AnvilContainer extends ContainerAnvil{
+
+    private class AnvilContainer extends ContainerAnvil {
+
         public AnvilContainer(EntityHuman entity){
             super(entity.inventory, entity.world, 0, 0, 0, entity);
         }
- 
+
         @Override
         public boolean a(EntityHuman entityhuman){
             return true;
         }
     }
- 
+
     public enum AnvilSlot {
-        INPUT_LEFT(0),
-        INPUT_RIGHT(1),
-        OUTPUT(2);
- 
+        INPUT_LEFT(0), INPUT_RIGHT(1), OUTPUT(2);
+
         private int slot;
- 
+
         private AnvilSlot(int slot){
             this.slot = slot;
         }
- 
+
         public int getSlot(){
             return slot;
         }
- 
+
         public static AnvilSlot bySlot(int slot){
-            for(AnvilSlot anvilSlot : values()){
+            for(AnvilSlot anvilSlot: values()){
                 if(anvilSlot.getSlot() == slot){
                     return anvilSlot;
                 }
             }
- 
+
             return null;
         }
     }
- 
+
     public class AnvilClickEvent {
+
         private AnvilSlot slot;
-        
+
         private String name = null;
- 
+
         private boolean close = true;
         private boolean destroy = true;
- 
+
         public AnvilClickEvent(AnvilSlot slot, String name){
             this.slot = slot;
             this.name = name;
         }
- 
+
         public AnvilSlot getSlot(){
             return slot;
         }
- 
+
         public String getName(){
             return name;
         }
- 
+
         public boolean getWillClose(){
             return close;
         }
- 
+
         public void setWillClose(boolean close){
             this.close = close;
         }
- 
+
         public boolean getWillDestroy(){
             return destroy;
         }
- 
+
         public void setWillDestroy(boolean destroy){
             this.destroy = destroy;
         }
     }
- 
+
     public interface AnvilClickEventHandler {
+
         public void onAnvilClick(AnvilClickEvent event);
     }
- 
+
     private Player player;
- 
+
     @SuppressWarnings("unused")
-	private AnvilClickEventHandler handler;
- 
+    private AnvilClickEventHandler handler;
+
     private HashMap<AnvilSlot, ItemStack> items = new HashMap<AnvilSlot, ItemStack>();
- 
+
     private Inventory inv;
- 
+
     private Listener listener;
- 
+
     public AnvilGUI(Player player, final AnvilClickEventHandler handler){
         this.player = player;
         this.handler = handler;
- 
+
         this.listener = new Listener(){
+
             @EventHandler
             public void onInventoryClick(InventoryClickEvent event){
                 if(event.getWhoClicked() instanceof Player){
-                	
+
                     @SuppressWarnings("unused")
-					Player clicker = (Player) event.getWhoClicked();
- 
+                    Player clicker = (Player) event.getWhoClicked();
+
                     if(event.getInventory().equals(inv)){
                         event.setCancelled(true);
-                        
+
                         ItemStack item = event.getCurrentItem();
                         int slot = event.getRawSlot();
                         String name = "";
- 
+
                         if(item != null){
                             if(item.hasItemMeta()){
                                 ItemMeta meta = item.getItemMeta();
- 
+
                                 if(meta.hasDisplayName()){
                                     name = meta.getDisplayName();
                                 }
                             }
                         }
- 
+
                         AnvilClickEvent clickEvent = new AnvilClickEvent(AnvilSlot.bySlot(slot), name);
- 
+
                         handler.onAnvilClick(clickEvent);
- 
+
                         if(clickEvent.getWillClose()){
 
                         }
- 
+
                         if(clickEvent.getWillDestroy()){
                             destroy();
                         }
                     }
                 }
             }
- 
+
             @EventHandler
             public void onInventoryClose(InventoryCloseEvent event){
                 if(event.getPlayer() instanceof Player){
                     @SuppressWarnings("unused")
-					Player player = (Player) event.getPlayer();
+                    Player player = (Player) event.getPlayer();
                     Inventory inv = event.getInventory();
- 
-                    if(inv.equals(AnvilGUI.this.inv)){
-                    try{
-                    	 inv.clear();
-                    }catch(ArrayIndexOutOfBoundsException e){
 
-                    }finally{
-                    	destroy();
-                    }
-           
+                    if(inv.equals(AnvilGUI.this.inv)){
+                        try{
+                            inv.clear();
+                        }catch (ArrayIndexOutOfBoundsException e){
+
+                        }finally{
+                            destroy();
+                        }
+
                     }
                 }
             }
- 
+
             @EventHandler
             public void onPlayerQuit(PlayerQuitEvent event){
                 if(event.getPlayer().equals(getPlayer())){
                     destroy();
-                    
+
                 }
             }
         };
- 
-        Bukkit.getPluginManager().registerEvents(listener, CompassPoints.getInstance()); 
+
+        Bukkit.getPluginManager().registerEvents(listener, CompassPoints.getInstance());
     }
- 
+
     public Player getPlayer(){
         return player;
     }
- 
+
     public void setSlot(AnvilSlot slot, ItemStack item){
-    	ItemMeta meta = item.getItemMeta();
-    	meta.setDisplayName(meta.getDisplayName().replace("§", "&"));
-    	item.setItemMeta(meta);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(meta.getDisplayName().replace("§", "&"));
+        item.setItemMeta(meta);
         items.put(slot, item);
     }
-    
+
     public void setInvName(String invname){
 
     }
- 
+
     public void open(){
         EntityPlayer p = ((CraftPlayer) player).getHandle();
- 
+
         AnvilContainer container = new AnvilContainer(p);
-        
-        //Set the items to the items from the inventory given
+
+        // Set the items to the items from the inventory given
         inv = container.getBukkitView().getTopInventory();
- 
-        for(AnvilSlot slot : items.keySet()){
+
+        for(AnvilSlot slot: items.keySet()){
             inv.setItem(slot.getSlot(), items.get(slot));
         }
- 
-        //Counter stuff that the game uses to keep track of inventories
+
+        // Counter stuff that the game uses to keep track of inventories
         int c = p.nextContainerCounter();
- 
-        //Send the packet
+
+        // Send the packet
         p.playerConnection.sendPacket(new PacketPlayOutOpenWindow(c, 8, "Repairing", 9, true));
- 
-        //Set their active container to the container
+
+        // Set their active container to the container
         p.activeContainer = container;
- 
-        //Set their active container window id to that counter stuff
+
+        // Set their active container window id to that counter stuff
         p.activeContainer.windowId = c;
- 
-        //Add the slot listener
+
+        // Add the slot listener
         p.activeContainer.addSlotListener(p);
     }
- 
+
     public void destroy(){
         player = null;
         handler = null;
         items = null;
- 
+
         HandlerList.unregisterAll(listener);
- 
+
         listener = null;
     }
 }

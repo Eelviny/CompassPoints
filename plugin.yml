@@ -2,8 +2,8 @@ name: CompassPoints
 description: Set points and teleport around multiple worlds using the humble compass!
 author: JayLegoMine14
 website: http://justgame.co/
-main: compassPoints.CompassPoints
-version: 4.0.1
+main: co.justgame.compasspoints.main.CompassPoints
+version: 4.1.0-alpha.1
 commands:
    point:
       description: Open CompassPoint.
