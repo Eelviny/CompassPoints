@@ -6,9 +6,9 @@ import org.bukkit.World;
 
 public class CompassPoint implements Comparable<CompassPoint> {
 
-    private int X;
-    private int Y;
-    private int Z;
+    private double X;
+    private double Y;
+    private double Z;
     private int position;
 
     private String world;
@@ -25,9 +25,9 @@ public class CompassPoint implements Comparable<CompassPoint> {
 
     public CompassPoint(int X, int Y, int Z, World world, String name){
 
-        this.X = X;
-        this.Y = Y;
-        this.Z = Z;
+        this.X = X+.5;
+        this.Y = Y+.5;
+        this.Z = Z+.5;
         this.world = world.getName();
         this.name = name;
     }
@@ -53,28 +53,16 @@ public class CompassPoint implements Comparable<CompassPoint> {
         }
     }
 
-    public Integer getX(){
+    public Double getX(){
         return this.X;
     }
 
-    public double getDoubleX(){
-        return (double) this.X;
-    }
-
-    public Integer getY(){
+    public Double getY(){
         return this.Y;
     }
 
-    public double getDoubleY(){
-        return (double) this.Y;
-    }
-
-    public Integer getZ(){
+    public Double getZ(){
         return this.Z;
-    }
-
-    public double getDoubleZ(){
-        return (double) this.Z;
     }
 
     public World getWorld(){
@@ -94,22 +82,22 @@ public class CompassPoint implements Comparable<CompassPoint> {
     }
 
     public Location getLocation(){
-        return new Location(this.getWorld(), this.getDoubleX(), this.getDoubleY(), this.getDoubleZ());
+        return new Location(this.getWorld(), this.getX(), this.getY(), this.getZ());
     }
 
     public Location getHeadLocation(){
-        return new Location(this.getWorld(), this.getDoubleX(), this.getDoubleY() + 1.0, this.getDoubleZ());
+        return new Location(this.getWorld(), this.getX(), this.getY() + 1.0, this.getZ());
     }
 
-    public void setX(int X){
+    public void setX(double X){
         this.X = X;
     }
 
-    public void setY(int Y){
+    public void setY(double Y){
         this.Y = Y;
     }
 
-    public void setZ(int Z){
+    public void setZ(double Z){
         this.Z = Z;
     }
 

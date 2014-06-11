@@ -31,9 +31,9 @@ import co.justgame.compasspoints.resources.NameUtils;
 
 public class CompassPointsGUI {
 
-    ArrayList<CompassPoint> compassPoints;
+    private ArrayList<CompassPoint> compassPoints;
 
-    public enum TYPE {
+    public static enum TYPE {
         EXTERNAL, PRIVATE
     }
 
@@ -103,10 +103,10 @@ public class CompassPointsGUI {
             @EventHandler(priority = EventPriority.HIGH)
             public void onInventoryClick(final InventoryClickEvent e){
                 final Player p = (Player) e.getWhoClicked();
-                Inventory inven = e.getInventory();
+                Inventory in = e.getInventory();
 
-                if(inven != null && e.getCurrentItem() != null)
-                    if(inven.getName().equals(inven.getName()) && inven.getHolder().equals(inven.getHolder())){
+                if(in != null && e.getCurrentItem() != null)
+                    if(inven.getName().equals(in.getName()) && inven.getHolder().equals(in.getHolder())){
                         e.setCancelled(true);
 
                         ItemStack is = e.getCurrentItem();
@@ -173,12 +173,12 @@ public class CompassPointsGUI {
 
                                 deleteMode = true;
                                 p.playSound(p.getLocation(), Sound.PISTON_EXTEND, 3, 0);
-                                p.sendMessage(Messages.get("gui.rename.enter"));
+                                p.sendMessage(Messages.get("gui.delete.enter"));
 
                             }else{
                                 deleteMode = false;
                                 p.playSound(p.getLocation(), Sound.PISTON_RETRACT, 3, 0);
-                                p.sendMessage(Messages.get("gui.rename.exit"));
+                                p.sendMessage(Messages.get("gui.delete.exit"));
                             }
                         }else if(is.equals(BED)){
                             if(type == TYPE.PRIVATE){
@@ -384,11 +384,11 @@ public class CompassPointsGUI {
             @EventHandler(priority = EventPriority.HIGH)
             public void onInventoryClose(InventoryCloseEvent e){
                 final Player p = (Player) e.getPlayer();
-                Inventory inven = e.getInventory();
+                Inventory in = e.getInventory();
 
-                if(inven != null){
-                    if(inven.getType().equals(InventoryType.ANVIL) || inven.getName().equals(inven.getName())
-                            && inven.getHolder().equals(inven.getHolder())){
+                if(in != null){
+                    if(in.getType().equals(InventoryType.ANVIL) || in.getName().equals(inven.getName())
+                            && in.getHolder().equals(inven.getHolder())){
 
                         if(deleteMode == true){
                             deleteMode = false;
@@ -540,9 +540,9 @@ public class CompassPointsGUI {
                 counter++;
                 compassPointInt++;
                 compassPointName++;
-
-                if(counter - 9 != LIMIT) inven.setItem(counter, BOOK_AND_QUILL);
             }
+            
+            if(counter - 9 != LIMIT) inven.setItem(counter, BOOK_AND_QUILL);
         }
         if(!redraw){
             p.openInventory(inven);

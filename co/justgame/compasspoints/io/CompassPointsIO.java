@@ -32,17 +32,23 @@ public class CompassPointsIO extends JavaPlugin {
         }else{
             newPlayerFile = createPlayerFile(playerName, true);
         }
+        
+        FileConfiguration config = YamlConfiguration.loadConfiguration(newPlayerFile);
 
         int counter = 0;
         for(CompassPoint compassPoint: compassPoints){
-
-            setMessage(newPlayerFile, "compasspoint" + counter + ".x", compassPoint.getX().toString());
-            setMessage(newPlayerFile, "compasspoint" + counter + ".y", compassPoint.getY().toString());
-            setMessage(newPlayerFile, "compasspoint" + counter + ".z", compassPoint.getZ().toString());
-            setMessage(newPlayerFile, "compasspoint" + counter + ".name", compassPoint.getName());
-            setMessage(newPlayerFile, "compasspoint" + counter + ".world", compassPoint.getWorldName());
-
+            config.set("compasspoint" + counter + ".x", compassPoint.getX().toString());
+            config.set("compasspoint" + counter + ".y", compassPoint.getY().toString());
+            config.set("compasspoint" + counter + ".z", compassPoint.getZ().toString());
+            config.set("compasspoint" + counter + ".name", compassPoint.getName());
+            config.set("compasspoint" + counter + ".world", compassPoint.getWorldName());
             counter++;
+        }
+        
+        try{
+            config.save(newPlayerFile);
+        }catch (IOException e){
+            e.printStackTrace();
         }
 
     }
@@ -67,11 +73,11 @@ public class CompassPointsIO extends JavaPlugin {
         for(String message: config.getConfigurationSection("").getKeys(true)){
 
             if(message.contains(".x")){
-                compassPoint.setX(Integer.parseInt(config.getString(message)));
+                compassPoint.setX(Double.parseDouble(config.getString(message)));
             }else if(message.contains(".y")){
-                compassPoint.setY(Integer.parseInt(config.getString(message)));
+                compassPoint.setY(Double.parseDouble(config.getString(message)));
             }else if(message.contains(".z")){
-                compassPoint.setZ(Integer.parseInt(config.getString(message)));
+                compassPoint.setZ(Double.parseDouble(config.getString(message)));
             }else if(message.contains(".world")){
                 compassPoint.setWorld(config.getString(message));
                 compassPoints.add(compassPoint);
@@ -122,17 +128,6 @@ public class CompassPointsIO extends JavaPlugin {
             e.printStackTrace();
         }
         return null;
-    }
-
-    private static void setMessage(File file, String name, String message){
-
-        FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-        config.set(name, message);
-        try{
-            config.save(file);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
     }
 
 }
