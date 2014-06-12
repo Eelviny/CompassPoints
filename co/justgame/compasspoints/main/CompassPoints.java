@@ -93,7 +93,7 @@ public class CompassPoints extends JavaPlugin {
 
         }else if(args.length == 1 && cmd.getName().equalsIgnoreCase("point")){
             if(!(sender instanceof Player)){
-                System.out.println("This command cannot be used by the Console");
+                Bukkit.getConsoleSender().sendMessage("§cThis command cannot be used by the Console");
             }
 
             if(sender.hasPermission("compasspoints.other")){
@@ -106,7 +106,7 @@ public class CompassPoints extends JavaPlugin {
 
         }else if(cmd.getName().equalsIgnoreCase("point") && args.length <= 0){
             if(!(sender instanceof Player)){
-                System.out.println("This command cannot be used by the Console");
+                Bukkit.getConsoleSender().sendMessage("§cThis command cannot be used by the Console");
             }
 
             if(sender.hasPermission("compasspoints.command")){
@@ -123,29 +123,33 @@ public class CompassPoints extends JavaPlugin {
             if(args.length != 0){
                 sender.sendMessage(Messages.get("commands.home.disimbiguation"));
             }else{
-                Player player = (Player) sender;
-                if(player.hasPermission("compasspoints.home")){
-                    if(player.getBedSpawnLocation() != null){
-                        if(player.hasPermission("compasspoints.teleport")){
-
-                            if(player.isInsideVehicle()){
-                                player.sendMessage(Messages.get("gui.ridingerror")
-                                        + player.getVehicle().getType().toString().toLowerCase() + "!");
+                if(sender instanceof Player){
+                    Player player = (Player) sender;
+                    if(player.hasPermission("compasspoints.home")){
+                        if(player.getBedSpawnLocation() != null){
+                            if(player.hasPermission("compasspoints.teleport")){
+    
+                                if(player.isInsideVehicle()){
+                                    player.sendMessage(Messages.get("gui.ridingerror")
+                                            + player.getVehicle().getType().toString().toLowerCase() + "!");
+                                }else{
+                                    player.teleport(player.getBedSpawnLocation());
+                                    player.sendMessage(Messages.get("gui.bed.teleport"));
+                                }
                             }else{
-                                player.teleport(player.getBedSpawnLocation());
-                                player.sendMessage(Messages.get("gui.bed.teleport"));
+                                player.sendMessage(Messages.get("gui.bed.pointcompass"));
+                                player.getWorld().playSound(player.getLocation(), Sound.ITEM_PICKUP, 5, 1);
+                                player.setCompassTarget((player.getBedSpawnLocation()));
                             }
+    
                         }else{
-                            player.sendMessage(Messages.get("gui.bed.pointcompass"));
-                            player.getWorld().playSound(player.getLocation(), Sound.ITEM_PICKUP, 5, 1);
-                            player.setCompassTarget((player.getBedSpawnLocation()));
+                            player.sendMessage(Messages.get("gui.bed.error"));
                         }
-
                     }else{
-                        player.sendMessage(Messages.get("gui.bed.error"));
+                        player.sendMessage(Messages.get("commands.home.nopermission"));
                     }
                 }else{
-                    player.sendMessage(Messages.get("commands.home.nopermission"));
+                   Bukkit.getConsoleSender().sendMessage("§cThis command cannot be used by the Console");
                 }
             }
 
