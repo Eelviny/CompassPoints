@@ -37,9 +37,9 @@ public class CompassPointsIO extends JavaPlugin {
 
         int counter = 0;
         for(CompassPoint compassPoint: compassPoints){
-            config.set("compasspoint" + counter + ".x", compassPoint.getX().toString());
-            config.set("compasspoint" + counter + ".y", compassPoint.getY().toString());
-            config.set("compasspoint" + counter + ".z", compassPoint.getZ().toString());
+            config.set("compasspoint" + counter + ".x", compassPoint.getExactX().toString());
+            config.set("compasspoint" + counter + ".y", compassPoint.getExactY().toString());
+            config.set("compasspoint" + counter + ".z", compassPoint.getExactZ().toString());
             config.set("compasspoint" + counter + ".name", compassPoint.getName());
             config.set("compasspoint" + counter + ".world", compassPoint.getWorldName());
             counter++;
@@ -114,7 +114,7 @@ public class CompassPointsIO extends JavaPlugin {
     private static File createPlayerFile(String playerName, boolean bool){
         try{
 
-            File dir = new File(CompassPoints.getThisDataFolder() + File.separator + "Player" + File.separator);
+            File dir = new File(CompassPoints.getInstance().getDataFolder() + File.separator + "Player" + File.separator);
             Files.createDirectories(dir.toPath());
             File playerFile = new File(dir, playerName + ".yml");
 

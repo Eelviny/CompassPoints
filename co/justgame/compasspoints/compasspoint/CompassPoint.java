@@ -52,17 +52,29 @@ public class CompassPoint implements Comparable<CompassPoint> {
             return false;
         }
     }
-
-    public Double getX(){
+    
+    public Double getExactX(){
         return this.X;
     }
-
-    public Double getY(){
+    
+    public Double getExactY(){
         return this.Y;
     }
-
-    public Double getZ(){
+    
+    public Double getExactZ(){
         return this.Z;
+    }
+
+    public Integer getX(){
+         return (int)this.X;
+    }
+    
+    public Integer getY(){
+       return (int)this.Y;
+    }
+    
+    public Integer getZ(){
+        return (int)this.Z;
     }
 
     public World getWorld(){
@@ -82,23 +94,29 @@ public class CompassPoint implements Comparable<CompassPoint> {
     }
 
     public Location getLocation(){
-        return new Location(this.getWorld(), this.getX(), this.getY(), this.getZ());
+        return new Location(this.getWorld(), this.getExactX(), this.getExactY(), this.getExactZ());
     }
 
     public Location getHeadLocation(){
-        return new Location(this.getWorld(), this.getX(), this.getY() + 1.0, this.getZ());
+        return new Location(this.getWorld(), this.getExactX(), this.getExactY() + 1.0, this.getExactZ());
     }
 
     public void setX(double X){
-        this.X = X;
+        if(X - (int) X == 0)
+            this.X = X+.5;
+        else this.X = X;
     }
 
     public void setY(double Y){
-        this.Y = Y;
+        if(Y - (int) Y == 0)
+            this.Y = Y+.5;
+        else this.Y = Y;
     }
 
     public void setZ(double Z){
-        this.Z = Z;
+        if(Z - (int) Z == 0)
+            this.Z = Z+.5;
+        else this.Z = Z;
     }
 
     public void setWorld(String w){

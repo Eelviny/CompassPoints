@@ -179,10 +179,6 @@ public class CompassPoints extends JavaPlugin {
         return compassPoints;
     }
 
-    public static synchronized File getThisDataFolder(){
-        return dataFolder;
-    }
-
     public static synchronized String getUUID(String playersName){
         if(UUIDs.containsKey(playersName)){
             return UUIDs.get(playersName);
